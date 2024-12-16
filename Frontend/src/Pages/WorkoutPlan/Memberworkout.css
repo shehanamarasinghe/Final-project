@@ -1,0 +1,404 @@
+.Mdashboard{
+    display: flex;
+}
+
+
+
+.Dash-Container{
+    flex: 6;
+        
+} 
+input[type="radio"]:focus {
+    outline: none;
+}
+
+.MMwrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+.MMcontainer {
+    height: 580px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+    width: 1000px;
+}
+
+.MMcard {
+    width: 80px;
+    border-radius: .75rem;
+    height: 520px;
+    background-size: cover;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 2rem;
+    margin: 0 10px;
+    display: flex;
+    align-items: flex-end;
+    transition: .6s cubic-bezier(.28,-0.03,0,.99);
+    box-shadow: 0px 10px 30px -5px rgba(0,0,0,0.8);
+}
+
+
+.MMrow {
+    color: white;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+
+
+.MMicon {
+    background: rgb(42, 42, 204);
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+
+.MMdescription {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    height: 80px;
+    width: 590px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition-delay: .3s;
+    transition: all .3s ease;
+}
+
+.MMdescription p {
+    color: #b0b0ba;
+    padding-top: 5px;
+}
+
+.MMdescription h4 {
+    text-transform: uppercase;
+}
+
+.MMcontainer>input {
+    display: none;
+}
+
+input:checked + label {
+    width: 600px;
+}
+
+input:checked + label .MMdescription {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.MMcard[for="c1"] {
+    background-image: url('../../Images/Image1.jpeg');
+}
+.MMcard[for="c2"] {
+    background-image: url('../../Images/Image2.jpeg');
+   
+}
+.MMcard[for="c3"] {
+    background-image: url('../../Images/Image3.jpeg');
+  
+}
+.MMcard[for="c4"] {
+    background-image: url('../../Images/image4.jpeg');
+    
+}
+.MMcard[for="c5"] {
+    background-image: url('../../Images/image4.jpeg');
+   
+}
+
+.checkhead{
+    display: flex;
+    flex-direction: column;
+}
+.check123{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+    
+}
+
+.check123>h1{
+    font-size: 24px;
+    padding: 0%;
+ 
+}
+
+.check123>p{
+    font-size: 14px;
+    width: 500px;
+    text-align: center;
+}
+
+
+.MMTable{
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+.MMTWeekdays{
+    display: flex;
+    flex-direction: column;
+    color: rgb(232, 232, 232);
+}
+
+.MMTWeekdays>p{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+}
+
+.MMTWeekdays>h1{
+    color: rgb(255, 251, 251);
+    font-size: 20px;
+}
+
+.MMBreakfast{
+    display: flex;
+    flex-direction: column;
+    color: rgb(255, 255, 255);
+    gap: 17px;
+    padding-left: 30px;
+    align-items: center;
+    padding-right: 11px;
+
+}
+
+.MMBreakfast>h1{
+
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+
+}
+
+.MMBreakfast>input{
+    margin-bottom: 7px;
+    padding: 3px;
+    border: none;
+    border-bottom:1px solid rgb(255, 255, 255) ;
+    background-color: transparent;
+}
+
+.Memberfeed{
+    width: 110px;
+    padding: 6px;
+    border-radius: 20px;
+    margin-left: 65%;
+    background-color: rgb(255, 0, 85);
+    border: 2px solid rgb(255, 0, 85);
+    color: white;
+}
+
+.mainMwork{
+    display: flex;
+    flex-direction: column;
+}
+
+.mainMwork>h1{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 20px;
+}
+
+
+
+.MainAddmeal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.AMclosebtn{
+
+    margin-top: 2.5rem; 
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.25rem;
+    color: #ffffff;
+}
+
+.addclosebtn{
+    align-self: end;
+    justify-self: end;
+}
+
+.AMaddmealbody{
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding-right: 5rem;
+    padding-left: 5rem; 
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem; 
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.25rem;
+    align-items: center;
+    margin-left: 1rem; 
+    margin-right: 1rem;
+}
+
+.write{
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.AMcontent{
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.editorcontainor{
+    height: 100px;
+    overflow: scroll;
+    border: 1px solid lightgray;
+    color: black;
+}
+
+.editor{
+    height: 100%;
+    border: none;
+    color: black;
+}
+
+.AMcontent >input{
+    padding: 10px;
+}
+
+.AMmenu{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100px;
+}
+
+.AMitem{
+    border: 1px solid rgb(181, 179, 179);
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgb(99, 99, 99);
+    gap: 8px;
+}
+
+.AMitem>h1{
+    color: black;
+    font-size: 20px;
+}
+
+.AMfile{
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.AMbuttons{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 3px;
+
+}
+
+.AMbutton1{
+    cursor: pointer;
+    color: teal;
+    background-color: white;
+    border: 1px solid teal;
+    padding: 3px 5px;
+ 
+}
+
+.AMbutton2{
+    cursor: pointer;
+    color: white ;
+    background-color: teal;
+    border: 1px solid teal;
+    padding: 3px 5px;
+
+}
+
+.AMuserc{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    color: teal;
+
+}
+
+.AWTable{
+    color: black;
+    display: flex;
+
+}
+.AWTWorkout{
+    display: flex;
+    color: black;
+}
+
+.AWTWorkout>p{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+}
+
+.AWTable>h1{
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    text-align: center;
+}
+
+.AMworkout{
+    display: flex;
+    flex-direction: column;
+    color: black;
+    gap: 1px;
+    padding-left: 20px;
+    align-items: center;
+    padding-right: 10px;
+
+}
+
+.AMworkout>h1{
+
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+
+}
+
+
+.mainMM{
+    display: flex;
+    flex-direction: column;
+}
+
+.mainMM>h1{
+    color: black;
+    text-align: center;
+    font-size: 20px;
+}

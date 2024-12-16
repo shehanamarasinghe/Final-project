@@ -1,0 +1,34 @@
+.Nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo{
+    width: 9rem ;
+    height: auto ;
+    
+}
+
+.Head-menu{
+    list-style: none;
+    font-size: 1.2rem;
+    font-weight:400;
+    display: flex;
+    gap: 2.5rem;
+    color: white;
+    padding-top: 2rem;
+    padding-right: 7rem;
+    
+}
+
+.Head-menu>li:hover{
+
+    cursor: pointer;
+    Color:var(--green);
+    cursor: pointer;
+}
+
+.Head-menu .nav-link {
+    text-decoration: none; 
+    color: inherit;
+}

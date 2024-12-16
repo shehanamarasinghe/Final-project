@@ -1,0 +1,93 @@
+.Reminders{
+    flex: 1.5;
+    -webkit-box-shadow: 2px 4px 10px #000000;
+    box-shadow: 2px 4px 10px 1px #c4bfbf;
+    border-radius: 12px;
+    padding: 4px 12px;
+    height: 400px;
+
+}
+
+.top-R{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: gray;
+}
+
+.top-R>.title-R{
+    color: gray;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.n-header{
+    color: black;
+    margin: 0px;
+    font-size: 17px;
+}
+.add-reminder{
+    color: rgb(99, 99, 99);
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.text_muted{
+    font-size: 12px;
+}
+
+.bottom-R>.notifications{
+    -webkit-box-shadow: 2px 4px 10px #000000;
+    box-shadow: 2px 4px 10px 1px #c4bfbf;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 0.7rem;
+    padding: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.bottom-R>.notifications>.n-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+}
+
+.bottom-R>.notifications>.n-icon{
+    padding: 0.4rem;
+    color: white;
+    background-color: lightcoral;
+    border-radius: 20%;
+    display: flex;
+
+}
+
+.notifications.deactive>.n-icon{
+    background-color: lightseagreen;
+}
+
+.notifications.add-reminder{
+     background-color: white;
+     border: 2px dashed rgb(142, 139, 139);
+     color: #818181;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+}
+
+.notifications.add-reminder>.add-icon{
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.Add-none{
+
+    display: flex;
+
+}

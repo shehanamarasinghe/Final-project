@@ -1,0 +1,43 @@
+:root {
+    --lightgray: #D9D9D9;
+    --gray: #9c9c9c;
+    --green: #e1c001;
+    --darkGrey: #464D53;
+    --caloryCard: #585252;
+    --planCard: linear-gradient(210.41deg, #fa5042 1.14%, #88ff00 100.75%);
+    --appColor:  #353535;
+  }
+
+  .Home {
+    mix-blend-mode: overlay;
+    background-color: var(--appColor);
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    overflow: hidden;
+  }
+  
+  ::-webkit-scrollbar{
+    display: none;
+  }
+
+  .strock-text{
+    color: transparent;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+  }
+
+  .btn{
+    background-color: white;
+    padding: 0.5rem;
+    font-weight: bold;
+    border: 4px solid transparent;
+    transition: 300ms all;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn:hover{
+    cursor: pointer;
+  }

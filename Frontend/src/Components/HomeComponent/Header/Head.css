@@ -1,0 +1,159 @@
+.Head{
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-head{
+    padding: 1rem;
+    padding-top: 0.5rem;
+    flex: 3;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
+
+.right-head{
+    flex: 1;
+    position: relative;
+    background-color: var(--green);
+}
+
+.best-ad{
+    margin-top: 0.5rem;
+    background-color: rgb(91, 87, 87);
+    border-radius: 4rem;
+    width: fit-content;
+    padding: 20px 13px;
+    text-transform: uppercase;
+    color: white;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+.best-ad>span{
+    z-index: 2;
+}
+
+.best-ad>div{
+    position: absolute;
+    background-color: var(--green);
+    width: 5.4rem;
+    height: 80%;
+    left: 8px;
+    border-radius: 3rem;
+    z-index: 1;
+
+}
+.Head-text{
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+    text-transform: uppercase;
+    font-size: 5rem;
+    font-weight: bold;
+    color: white;
+    text-overflow: inherit;
+}
+
+.Head-text>div:nth-of-type(3){
+    font-size: 1rem;
+    font-weight: 200;
+    text-transform: none;
+    letter-spacing: 1px;
+    width: 80%;
+
+
+}
+
+.head-button{
+    display: flex;
+    gap: 1rem;
+    font-weight: normal;
+}
+
+.head-button>:nth-of-type(1){
+    color: white;
+    background-color: var(--green);
+    width: 8rem;
+}
+
+.head-button>:nth-of-type(2){
+    color: white;
+    background-color: transparent;
+    width: 8rem;
+    border: 3px solid var(--green);
+}
+
+.heart-rate>img{
+    width: 2rem;
+}
+
+.right-head>div:nth-of-type(1){
+    display: flex;
+    position: absolute;
+    right: 3rem;top: 2.5rem;color: black;
+    gap: 1rem;
+}
+
+.heart-rate{
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    background-color: var(--darkGrey);
+    width: fit-content;
+    padding: 1.3rem;
+    align-items: start;
+    border-radius:5px;
+    position: absolute;
+    right: 5rem;
+    top: 9rem;
+}
+
+.heart-rate>:nth-child(2){
+    color: var(--gray);
+}
+
+.heart-rate>:nth-child(3){
+    color: white;
+    font-size: 1.5rem;
+}
+
+.headerimage{
+    position: absolute;
+    top: 7.7rem;
+    right: 12rem;
+    width: 120rem;
+
+}
+
+.signbtn>button{
+    border-radius: 1rem;
+    
+}
+
+.signbtn>button:hover{
+    color: var(--green);
+}
+
+.links{
+    text-decoration: none;
+    color: inherit;
+}
+
+.links:focus{
+    text-decoration: none;
+}
+
+.links button.btn{
+    border-radius: 1rem;
+
+}
+
+.link-G button.btn{
+    color: white;
+    background-color: var(--green);
+    width: 8rem;
+}

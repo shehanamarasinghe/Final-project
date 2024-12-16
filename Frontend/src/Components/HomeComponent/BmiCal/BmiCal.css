@@ -1,0 +1,150 @@
+
+:root {
+--first-color: hsl(79, 72%, 55%);
+--first-color-light: hsl(79, 97%, 77%);
+--first-color-alt: hsl(79, 67%, 52%);
+--first-color-dark: hsl(79, 63%, 50%);
+--first-color-gray: hsl(79, 6%, 64%);
+--title-color: hsl(180, 4%, 98%);
+--title-color-black: hsl(180, 4%, 12%);
+--text-color: hsl(180, 4%, 72%);
+--text-color-light: hsl(180, 4%, 65%);
+--body-color: hsl(180, 12%, 8%);
+}
+
+p{
+    color: white;
+ }
+
+h1, h2, h3 {
+    color: white;
+    font-weight: bold;
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .section__title, 
+  .section__title-border {
+    font-size: 3rem;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+  }
+  
+  .section__subtitle {
+    font-size: var(--h2-font-size);
+    font-family: var(--second-font);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    color: var(--first-color);
+    transform: rotate(-2deg);
+  }
+  
+  .section__titles {
+    display: flex;
+    column-gap: .75rem;
+    justify-content: center;
+  }
+  
+  .section__title-border {
+    -webkit-text-stroke: 1px var(--text-color);
+    color: transparent;
+  }
+  
+
+  
+.calculate{
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.calculate__container{
+    row-gap: 4rem;
+}
+
+.calculate__content .section__titles{
+    margin-bottom: 2rem;
+    text-align: center;
+
+}
+
+.calculate__description{
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.calculate__form{
+    display: grid;
+    row-gap: 1rem;
+}
+
+.calculate__box{
+    position: relative;
+    border: 2px solid var(--first-color-light);
+}
+
+.calculate__input{
+    width: 100%;
+    background: transparent;
+    padding: 20px 56px 20px 24px;
+    outline: none;
+    border: none;
+    color: var(--text-color);
+}
+
+.calculate__input::-webkit-outer-spin-button,
+.calculate__input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.calculate__lable{
+    position: absolute;
+    right: 1.5rem;
+    top: 1.25rem;
+    color: var(--text-color);
+
+}
+
+.calculate__form .button{
+    margin-top: 1.5rem;
+    width: 10rem;
+    height: 3.6rem;
+    background-color: orangered;
+    color: white;
+}
+
+ .calculate__img{
+    width: 250px;
+    padding-left:10rem;
+ }
+
+ .left-bm{
+    flex: 1 1;
+    padding-left:10rem;
+ }
+
+ .right-bm{
+    flex: 1;
+ }
+
+ .Container{
+    padding: 0 2rem;
+    display: flex;
+    gap: 2rem;
+ }
+
+ .calculate__massage{
+  position: absolute;
+  transform: translateY(1rem);
+ }
+ 

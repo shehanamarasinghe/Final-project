@@ -1,0 +1,55 @@
+.mail{
+    display: flex;
+    padding: 0 2rem;
+    gap: 10rem;
+}
+
+.left-m{
+    color: white;
+    font-size: 3.3rem;
+    font-weight: bold;
+    text-transform: uppercase; 
+    position: relative;
+}
+ 
+.left-m>div{
+    display: flex;
+    gap: 1rem;
+}
+
+.right-m{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+   padding-left: 8rem;
+}
+
+.email-container{
+    display: flex;
+    gap: 3rem;
+    background-color: gray;
+    padding: 0.8rem 1.7rem;
+  
+}
+
+.email-container>input{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: var(--lightgray);
+
+}
+
+::placeholder{
+    color: var(--lightgray);
+    font-size: 0.9rem;
+}
+
+.btnM{
+    background-color: orangered;
+    color: white;
+    width: 6rem;
+    height: 2.7rem;
+    border: none;
+    font-size: 1rem;
+}

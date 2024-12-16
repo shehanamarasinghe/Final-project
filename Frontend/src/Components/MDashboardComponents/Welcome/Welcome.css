@@ -1,0 +1,23 @@
+.Welcomepost{
+    display: flex;
+}
+
+
+.welcomeimage{
+    height: 110px;
+
+}
+
+.welcometext>.head{
+    font-size: 38px;
+    font-weight: 700;
+
+}
+
+.welcometext{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5px;
+    
+}

@@ -1,0 +1,30 @@
+[
+    {
+        "label": "Sun",
+        "crowd": "4"
+    },
+    {
+        "label": "Mon",
+        "crowd": "12"
+    },
+    {
+        "label": "Tue",
+        "crowd": "17"
+    },
+    {
+        "label": "Wen",
+        "crowd": "10"
+    },
+    {
+        "label": "Thu",
+        "crowd": "13"
+    },
+    {
+        "label": "Fri",
+        "crowd": "20"
+    },
+    {
+        "label": "Sat",
+        "crowd": "9"
+    }
+]
