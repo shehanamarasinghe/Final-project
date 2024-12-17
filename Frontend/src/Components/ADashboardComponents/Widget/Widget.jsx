@@ -79,7 +79,7 @@ const Widget = ({ type }) => {
       break;
     case "Steps":
       data = {
-        title: "GYM MEMBERSHIP",
+        
         component: <GymMemberDonutChart />, // Render the donut chart here
       };
       break;

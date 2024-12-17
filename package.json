@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@mui/x-data-grid": "^7.3.0",
+    "axios": "^1.6.7",
+    "react-router-dom": "^6.21.3"
+  }
+}
