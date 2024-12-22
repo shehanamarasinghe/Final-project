@@ -21,6 +21,7 @@ import paymentRoutes from "./routs/payment.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import dashboardwidgetRoutes from './routs/DashboardwidgetRoutes.js';
+import assignworkouts from './routs/AssignworkoutPlanRoutes.js';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use('/uploads', express.static(path.join(__dirname, "uploads")));
 app.use("/api/members", memberRoutes);
 app.use('/api/pay', paymentRoutes);
 app.use('/api/dashboard-widget', dashboardwidgetRoutes);
+app.use('/api/assignworkout', assignworkouts);
 
 
 

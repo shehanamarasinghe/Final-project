@@ -111,6 +111,7 @@ const ExerciseManagement = () => {
       <div className="container mx-auto flex space-x-4 py-4 pl-6"> {/* Added pl-6 for left padding */}
       <Link to="/ExerciseManagement" className="text-gray-800 hover:text-blue-500 font-semibold">Exercises</Link>
       <Link to="/workout-plans" className="text-gray-800 hover:text-blue-500 font-semibold">Workout Plans</Link>
+      <Link to="/Assignworkout" className='text-gray-800 hover:text-blue-500 font-semibold'>Assign Workout</Link>
        </div>
       </nav>
     <div className="container mx-auto px-4 py-8">
@@ -197,7 +198,7 @@ const ExerciseManagement = () => {
         {exercises.map((exercise) => (
           <div key={exercise.id} className="bg-white shadow-md rounded-lg p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">{exercise.name}</h2>
+              <h2 className="text-xl text-gray-800 font-bold">{exercise.name}</h2>
               <div className="space-x-2">
                 <button
                   onClick={() => handleEdit(exercise)}

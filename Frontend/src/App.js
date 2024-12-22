@@ -21,7 +21,7 @@ import MemberNotifications from './Pages/Notificationsmember/Notificationmember.
 import ProfileEdit from './Pages/ProfileEdit/ProfileEdit.jsx';
 import Adminpayment from './Pages/Payments/Adminpayment.jsx';
 import MemberPayment from './Pages/Payments/MemberPayment.jsx';
-
+import Assignworkout from './Pages/WorkoutPlan/Adminworkout/Assignworkout.jsx';
 
   
 
@@ -50,6 +50,7 @@ function App() {
       <Route path="/ProfileEdit" element={<ProfileEdit />} />
       <Route path="/Adminpayment" element={<Adminpayment />} />
       <Route path="/MemberPayment" element={<MemberPayment />} />
+      <Route path="/Assignworkout" element={<Assignworkout />} />
       
 
       <Route 

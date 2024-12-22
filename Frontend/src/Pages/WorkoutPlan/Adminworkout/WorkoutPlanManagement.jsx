@@ -296,6 +296,7 @@ const WorkoutPlanManagement = () => {
       <div className="container mx-auto flex space-x-4 py-4 pl-6"> {/* Added pl-6 for left padding */}
       <Link to="/ExerciseManagement" className="text-gray-800 hover:text-blue-500 font-semibold">Exercises</Link>
       <Link to="/workout-plans" className="text-gray-800 hover:text-blue-500 font-semibold">Workout Plans</Link>
+      <Link to="/Assignworkout" className='text-gray-800 hover:text-blue-500 font-semibold'>Assign Workout</Link>
        </div>
       </nav>
     <div className="container mx-auto px-4 py-8">
