@@ -22,6 +22,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dashboardwidgetRoutes from './routs/DashboardwidgetRoutes.js';
 import assignworkouts from './routs/AssignworkoutPlanRoutes.js';
+import feedbackRoutes from './routs/Feedback.js';
 
 dotenv.config();
 
@@ -54,6 +55,8 @@ app.use("/api/members", memberRoutes);
 app.use('/api/pay', paymentRoutes);
 app.use('/api/dashboard-widget', dashboardwidgetRoutes);
 app.use('/api/assignworkout', assignworkouts);
+app.use('/api/feedback', feedbackRoutes);
+
 
 
 
