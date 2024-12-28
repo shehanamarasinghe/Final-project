@@ -1,8 +1,7 @@
-// This page is used to display the workout plans assigned to the user. The user can view the workout plans and provide feedback on the workout plans. The user can also view the assigned date of the workout plan. The user can also view the workout plan description. The user can also view the workout plan name
-
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp, Calendar, Dumbbell } from 'lucide-react';
 import PremiumMemberFeedbackForm from '../../Components/Feedbacks/feedback.jsx';
+import axios from 'axios';
 
 function MemberWorkoutPlansPreview() {
     const [expandedPlan, setExpandedPlan] = useState(null);
@@ -16,71 +15,51 @@ function MemberWorkoutPlansPreview() {
     }, []);
 
     const fetchWorkoutPlans = async () => {
-        setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            if (!token) throw new Error('No token found in localStorage.');
+            if (!token) throw new Error('No token found');
 
-            const response = await fetch(`/assignworkout/assigned-plans`, {
+            const response = await fetch('/assignworkout/assigned-plans', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (!response.ok) throw new Error(`Failed to fetch workout plans: ${response.statusText}`);
+            if (!response.ok) throw new Error('Failed to fetch workout plans');
             const data = await response.json();
             setWorkoutPlans(data);
         } catch (error) {
-            console.error('Error fetching workout plans:', error);
+            console.error('Error:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleModalSubmit = async (data) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        console.error('No token found in localStorage.');
-        alert('Authentication error. Please log in again.');
-        return;
-    }
+    const handleModalSubmit = async (feedbackData) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token || !selectedPlan?.id) {
+                throw new Error('Missing required data');
+            }
 
-    try {
-        // Hardcoded user_id and plan_id for testing
-        const user_id = 38; // Replace with a valid user_id from your database
-        const plan_id = 2; // Replace with a valid plan_id from your database
+            const response = await axios.post('/feedback/submit', {
+                plan_id: selectedPlan.id,
+                rating: feedbackData.rating,
+                feedback: feedbackData.feedback,
+                recommend_status: feedbackData.recommend_status
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
 
-        const feedbackData = {
-            ...data,
-            user_id,
-            plan_id,
-        };
-
-        const response = await fetch('/feedback/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(feedbackData),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Failed to submit feedback: ${errorData.error || response.statusText}`);
+            alert(response.data || 'Feedback submitted successfully!');
+            setShowModal(false);
+            setSelectedPlan(null);
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.response?.data || 'Failed to submit feedback');
         }
-
-        const result = await response.json();
-        alert('Feedback submitted successfully!');
-        console.log('Feedback submitted:', result);
-        setShowModal(false); // Close modal after successful submission
-    } catch (error) {
-        console.error('Error submitting feedback:', error.message);
-        alert('Failed to submit feedback. Please try again later.');
-    }
-};
-
+    };
 
     if (loading) return <div>Loading workout plans...</div>;
-    if (workoutPlans.length === 0) return <div>No workout plans assigned.</div>;
+    if (!workoutPlans.length) return <div>No workout plans assigned.</div>;
 
     return (
         <div className="max-w-4xl mx-auto p-4">
@@ -115,7 +94,8 @@ function MemberWorkoutPlansPreview() {
                             <div className="border-t">
                                 <div className="p-4">
                                     <button
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.stopPropagation();
                                             setSelectedPlan(plan);
                                             setShowModal(true);
                                         }}
@@ -132,8 +112,12 @@ function MemberWorkoutPlansPreview() {
 
             <PremiumMemberFeedbackForm
                 isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                onSubmit={(data) => handleModalSubmit(data)}
+                onClose={() => {
+                    setShowModal(false);
+                    setSelectedPlan(null);
+                }}
+                onSubmit={handleModalSubmit}
+                planData={selectedPlan}
             />
         </div>
     );

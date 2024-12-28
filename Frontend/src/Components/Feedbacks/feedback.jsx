@@ -1,5 +1,4 @@
-// feedback.jsx frontend component
-
+// PremiumMemberFeedbackForm Component (feedback.jsx)
 import React, { useState } from 'react';
 import { Star, ThumbsUp, ThumbsDown, MessageCircle, Send, CheckCircle2, X } from 'lucide-react';
 
@@ -38,21 +37,37 @@ const PremiumRating = ({ rating, setRating, size = 40 }) => {
   );
 };
 
-const PremiumMemberFeedbackModal = ({ isOpen, onClose }) => {
+const PremiumMemberFeedbackForm = ({ isOpen, onClose, onSubmit, planData }) => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [recommendStatus, setRecommendStatus] = useState(null);
   const [submission, setSubmission] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmission(true);
-    setTimeout(() => {
-      setSubmission(false);
-      onClose(); // Close modal after submission
-    }, 3000);
-  };
+    
+    const feedbackData = {
+        rating,
+        feedback,
+        recommend_status: recommendStatus
+    };
 
+    try {
+        await onSubmit(feedbackData);
+        setSubmission(true);
+        setTimeout(() => {
+            setSubmission(false);
+            onClose();
+            // Reset form
+            setRating(0);
+            setFeedback('');
+            setRecommendStatus(null);
+        }, 3000);
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+        alert('Failed to submit feedback. Please try again.');
+    }
+};
   if (!isOpen) return null;
 
   return (
@@ -61,12 +76,14 @@ const PremiumMemberFeedbackModal = ({ isOpen, onClose }) => {
         <div
           className="h-2 w-full"
           style={{
-            background: `linear-gradient(90deg, ${COLORS.primary} 0%, ${COLORS.secondary} 100%)`,
+            background: `linear-gradient(90deg, ${COLORS.primary} 0%, ${COLORS.secondary} 100%)`
           }}
         />
         <div className="p-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-extrabold text-gray-800">Your Fitness Journey Feedback</h2>
+            <h2 className="text-2xl font-extrabold text-gray-800">
+            {planData ? `Feedback for: ${planData.name}` : 'Provide Feedback'}
+            </h2>
             <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
               <X size={24} />
             </button>
@@ -134,4 +151,4 @@ const PremiumMemberFeedbackModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default PremiumMemberFeedbackModal;
+export default PremiumMemberFeedbackForm;

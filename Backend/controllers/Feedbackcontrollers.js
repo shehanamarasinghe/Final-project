@@ -1,36 +1,29 @@
-//backend/controllers/Feedbackcontrollers.js
-
 import { db } from '../db.js';
 
-/**
- * Handle feedback submission.
- */
 export const submitFeedback = async (req, res) => {
-    console.log('API HIT: /feedback'); // Log when API is hit
-    console.log('Request Body:', req.body); // Log the request body
+    const user_id = req.user?.id || req.user?.user_id;
+    const { plan_id, rating, feedback, recommend_status } = req.body;
 
-    const { user_id, plan_id, rating, feedback, recommend_status } = req.body;
+    if (!user_id) {
+        return res.status(401).send('User not properly authenticated');
+    }
 
-    if (!user_id || !plan_id || !rating) {
-        console.error('Validation error: Missing required fields.');
-        return res.status(400).json({ error: 'User ID, Plan ID, and Rating are required.' });
+    if (!plan_id || !rating) {
+        return res.status(400).send('Plan ID and Rating are required.');
     }
 
     try {
+        const recommendStatusValue = recommend_status === undefined ? 0 : recommend_status;
+
         const query = `
             INSERT INTO feedback (user_id, plan_id, rating, feedback, recommend_status) 
             VALUES (?, ?, ?, ?, ?)
         `;
-        console.log('Executing Query:', query); // Log the query
-        const [result] = await db.query(query, [user_id, plan_id, rating, feedback, recommend_status]);
-        console.log('Query Result:', result); // Log query result
-
-        return res.status(201).json({
-            message: 'Feedback submitted successfully.',
-            feedbackId: result.insertId,
-        });
+        
+        await db.query(query, [user_id, plan_id, rating, feedback || '', recommendStatusValue]);
+        res.status(201).send('Feedback submitted successfully');
     } catch (error) {
         console.error('Database error:', error);
-        return res.status(500).json({ error: 'Internal server error.' });
+        res.status(500).send('Internal server error');
     }
 };
