@@ -17,12 +17,15 @@ import mealPlanRequestRoutes from './routs/notificationsRoutes.js';
 import notificationsRoutes from './routs/NotipendingRoutes.js';
 import membernotificationsRoutes from './routs/MembernotiRoutes.js';
 import memberRoutes from "./routs/memberRoutes.js";
-import paymentRoutes from "./routs/payment.js";
+//import paymentRoutes from "./routs/payment.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import dashboardwidgetRoutes from './routs/DashboardwidgetRoutes.js';
 import assignworkouts from './routs/AssignworkoutPlanRoutes.js';
 import feedbackRoutes from './routs/Feedback.js';
+import adminfeedbackroutes from './routs/Adminfeedback.js';
+import paymentRoutes from "./routs/paymentsRoutes.js";
+import adminpayemntroutes from "./routs/AdminpaymentRoutes.js";
 
 dotenv.config();
 
@@ -53,10 +56,13 @@ app.use('/api/pending-notifications', notificationsRoutes);
 app.use('/api/member-notifications', membernotificationsRoutes);
 app.use('/uploads', express.static(path.join(__dirname, "uploads")));
 app.use("/api/members", memberRoutes);
-app.use('/api/pay', paymentRoutes);
+//app.use('/api/pay', paymentRoutes);
 app.use('/api/dashboard-widget', dashboardwidgetRoutes);
 app.use('/api/assignworkout', assignworkouts);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/admin/feedback', adminfeedbackroutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/shehan', adminpayemntroutes);
 
 
 

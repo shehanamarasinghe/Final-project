@@ -49,13 +49,13 @@ const Slidebar = () => {
               <span className="text-black text-base font-normal ml-4">Workouts</span>
             </li>
           </Link>
-          <Link to="/ADashboard" className="no-underline">
+          <Link to="/AFeedback" className="no-underline">
             <li className="flex items-center py-3 cursor-pointer hover:bg-red-300 pl-2"> 
               <AddchartRoundedIcon className="text-pink-500 mr-2 text-lg" />
               <span className="text-black text-base font-normal ml-4">Stats</span>
             </li>
           </Link>
-          <Link to="/Adminpayment" className="no-underline">
+          <Link to="/AdminPaymentDashboard" className="no-underline">
             <li className="flex items-center py-3 cursor-pointer hover:bg-red-300 pl-2"> 
               <PaidRoundedIcon className="text-pink-500 mr-2 text-lg" />
               <span className="text-black text-base font-normal ml-4">Payments</span>

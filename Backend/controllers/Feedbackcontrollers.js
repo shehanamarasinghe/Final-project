@@ -17,8 +17,9 @@ export const submitFeedback = async (req, res) => {
         const recommendStatusValue = recommend_status === undefined ? 0 : recommend_status;
 
         const query = `
-            INSERT INTO feedback (user_id, plan_id, rating, feedback, recommend_status) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO feedback (user_id, plan_id, rating, feedback, recommend_status,created_at
+            ) 
+            VALUES (?, ?, ?, ?, ?, NOW())
         `;
         
         await db.query(query, [user_id, plan_id, rating, feedback || '', recommendStatusValue]);

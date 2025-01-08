@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+//import React, { useContext } from 'react';
 import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login.jsx"
 import Register from "./Pages/Register/Register.jsx"
@@ -22,6 +22,9 @@ import ProfileEdit from './Pages/ProfileEdit/ProfileEdit.jsx';
 import Adminpayment from './Pages/Payments/Adminpayment.jsx';
 import MemberPayment from './Pages/Payments/MemberPayment.jsx';
 import Assignworkout from './Pages/WorkoutPlan/Adminworkout/Assignworkout.jsx';
+import AFeedback from './Pages/AFeedbacks/Adminfeedback.jsx';
+import MemberPaymentDashboard from "./Pages/Payments/MemberPaymentDashboard.jsx";
+import AdminPaymentDashboard from "./Pages/Payments/AdminpaymentDashboard.jsx";
 
   
 
@@ -51,6 +54,9 @@ function App() {
       <Route path="/Adminpayment" element={<Adminpayment />} />
       <Route path="/MemberPayment" element={<MemberPayment />} />
       <Route path="/Assignworkout" element={<Assignworkout />} />
+      <Route path="/AFeedback" element={<AFeedback />} />
+      <Route path="/MemberPaymentDashboard" element={<MemberPaymentDashboard />} />
+      <Route path="/AdminPaymentDashboard" element={<AdminPaymentDashboard />} />
       
 
       <Route 
