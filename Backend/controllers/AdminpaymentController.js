@@ -193,14 +193,14 @@ export const generateReport = async (req, res) => {
     const payments = await query(`
       SELECT 
         p.id,
-        u.name as memberName,
-        u.email as memberEmail,
+        CONCAT(u.Firstname, ' ', u.Lastname) as memberName,
+        u.Email as memberEmail,
         p.amount,
         p.payment_date,
         p.status,
         s.plan as planName
       FROM payment p
-      JOIN users u ON p.userid = u.id
+      JOIN login u ON p.userid = u.userid
       JOIN subscriptions s ON p.userid = s.userid
       WHERE p.payment_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
       ORDER BY p.payment_date DESC
