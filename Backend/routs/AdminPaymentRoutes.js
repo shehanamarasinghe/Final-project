@@ -20,6 +20,8 @@ router.post("/payment-slips/:id/approve", approvePayment);
 router.post("/payment-slips/:id/reject", rejectPayment);
 
 // Generate payment report
-router.get("/reports/generate", generateReport);
+//router.get("/reports/generate", generateReport);
+
+router.post('/reports/generate', generateReport);
 
 export default router;

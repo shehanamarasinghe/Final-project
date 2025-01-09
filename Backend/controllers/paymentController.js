@@ -3,7 +3,6 @@ import { db } from '../db.js';
 import { upload } from '../uploadConfig.js';
 
 export const submitPayment = (req, res) => {
-  // The upload middleware handles the file
   upload.single('paymentSlip')(req, res, async (err) => {
     if (err) {
       console.error('File upload error:', err);
@@ -15,41 +14,90 @@ export const submitPayment = (req, res) => {
     }
 
     try {
-      const userid = req.user.id; // Get from your auth middleware
-      const amount = req.body.amount;
+      const userid = req.user.id;
+      const { amount, plan } = req.body;  // Get plan from request body
       const slipUrl = req.file.path;
 
-      // First insert the payment record
-      const insertPaymentQuery = `
-        INSERT INTO payment (userid, amount, payment_date, status, slip_url)
-        VALUES (?, ?, NOW(), 'pending', ?)
-      `;
-
-      db.query(insertPaymentQuery, [userid, amount, slipUrl], (err, paymentResult) => {
+      // Begin transaction
+      db.beginTransaction(async (err) => {
         if (err) {
-          console.error('Payment insert error:', err);
-          return res.status(500).json({ error: 'Failed to save payment record' });
+          return res.status(500).json({ error: 'Transaction start failed' });
         }
 
-        // Then update the subscription status
-        const updateSubscriptionQuery = `
-          UPDATE subscriptions
-          SET status = 'pending_verification'
-          WHERE userid = ?
-        `;
+        try {
+          // 1. Insert payment record
+          const insertPaymentQuery = `
+            INSERT INTO payment (userid, amount, payment_date, status, slip_url)
+            VALUES (?, ?, NOW(), 'pending', ?)
+          `;
 
-        db.query(updateSubscriptionQuery, [userid], (updateErr) => {
-          if (updateErr) {
-            console.error('Subscription update error:', updateErr);
-            return res.status(500).json({ error: 'Failed to update subscription status' });
-          }
+          db.query(insertPaymentQuery, [userid, amount, slipUrl], (err, paymentResult) => {
+            if (err) {
+              return db.rollback(() => {
+                console.error('Payment insert error:', err);
+                res.status(500).json({ error: 'Failed to save payment record' });
+              });
+            }
 
-          res.status(200).json({
-            message: 'Payment submitted successfully',
-            paymentId: paymentResult.insertId,
-            slipUrl: slipUrl
+            // 2. Insert or update subscription record
+            const insertSubscriptionQuery = `
+              INSERT INTO subscriptions (
+                userid, 
+                plan, 
+                amount, 
+                status, 
+                start_date, 
+                next_payment_date, 
+                created_at
+              )
+              VALUES (
+                ?, 
+                'Monthly', 
+                ?, 
+                'pending_verification', 
+                CURDATE(), 
+                DATE_ADD(CURDATE(), INTERVAL 1 MONTH), 
+                NOW()
+              )
+              ON DUPLICATE KEY UPDATE
+                plan = 'Monthly',
+                amount = VALUES(amount),
+                status = 'pending_verification',
+                next_payment_date = DATE_ADD(CURDATE(), INTERVAL 1 MONTH)
+            `;
+
+            db.query(insertSubscriptionQuery, [userid,amount], (err, subscriptionResult) => {
+              if (err) {
+                return db.rollback(() => {
+                  console.error('Subscription insert error:', err);
+                  res.status(500).json({ error: 'Failed to update subscription' });
+                });
+              }
+
+              // If everything is successful, commit the transaction
+              db.commit((err) => {
+                if (err) {
+                  return db.rollback(() => {
+                    console.error('Commit error:', err);
+                    res.status(500).json({ error: 'Transaction commit failed' });
+                  });
+                }
+
+                res.status(200).json({
+                  message: 'Payment and subscription updated successfully',
+                  paymentId: paymentResult.insertId,
+                  subscriptionId: subscriptionResult.insertId || null,
+                  slipUrl: slipUrl
+                });
+              });
+            });
           });
-        });
+        } catch (error) {
+          return db.rollback(() => {
+            console.error('Transaction error:', error);
+            res.status(500).json({ error: 'Transaction failed' });
+          });
+        }
       });
 
     } catch (error) {

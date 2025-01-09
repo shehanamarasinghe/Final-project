@@ -1,5 +1,7 @@
 // controllers/paymentController.js
 import { db } from '../db.js';
+import PDFDocument from 'pdfkit';
+
 
 // Promisify query to use async/await
 const query = (sql, values) => {
@@ -188,37 +190,87 @@ export const rejectPayment = async (req, res) => {
   }
 };
 
+
+
 export const generateReport = async (req, res) => {
   try {
-    const payments = await query(`
+    // Get all payment data
+    const query = `
       SELECT 
         p.id,
-        CONCAT(u.Firstname, ' ', u.Lastname) as memberName,
-        u.Email as memberEmail,
         p.amount,
-        p.payment_date,
         p.status,
-        s.plan as planName
+        p.payment_date,
+        u.email,
+        CONCAT(u.firstname, ' ', u.lastname) as member_name,
+        s.plan
       FROM payment p
       JOIN login u ON p.userid = u.userid
-      JOIN subscriptions s ON p.userid = s.userid
-      WHERE p.payment_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+      LEFT JOIN subscriptions s ON p.userid = s.userid
       ORDER BY p.payment_date DESC
-    `);
+    `;
 
-    // Convert data to CSV format
-    const csvData = payments.map(payment => {
-      return `${payment.id},${payment.memberName},${payment.memberEmail},${payment.amount},${payment.payment_date},${payment.status},${payment.planName}`;
-    }).join('\n');
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).json({ error: 'Failed to fetch payment data' });
+      }
 
-    const headers = 'ID,Member Name,Email,Amount,Payment Date,Status,Plan\n';
-    const csv = headers + csvData;
+      // Create PDF document
+      const doc = new PDFDocument();
+      
+      // Set response headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=payment-report.pdf');
+      
+      // Pipe the PDF to the response
+      doc.pipe(res);
 
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=payment-report.csv');
-    return res.status(200).send(csv);
+      // Add report title
+      doc.fontSize(20).text('Payment Report', { align: 'center' });
+      doc.moveDown();
+      doc.fontSize(12).text(`Generated on: ${new Date().toLocaleDateString()}`, { align: 'center' });
+      doc.moveDown(2);
+
+      // Add payment records
+      results.forEach((payment, index) => {
+        doc.fontSize(12).text('Payment Details', { underline: true });
+        doc.fontSize(10)
+           .text(`Payment ID: ${payment.id}`)
+           .text(`Member: ${payment.member_name}`)
+           .text(`Email: ${payment.email}`)
+           .text(`Amount: $${payment.amount.toFixed(2)}`)
+           .text(`Status: ${payment.status}`)
+           .text(`Date: ${new Date(payment.payment_date).toLocaleDateString()}`)
+           .text(`Plan: ${payment.plan || 'N/A'}`);
+
+        if (index < results.length - 1) {
+          doc.moveDown()
+             .lineTo(doc.page.width - 50, doc.y)
+             .stroke();
+        }
+        doc.moveDown();
+      });
+
+      // Add summary
+      doc.moveDown()
+         .fontSize(12)
+         .text('Summary', { underline: true });
+      
+      const totalAmount = results.reduce((sum, payment) => sum + payment.amount, 0);
+      const approvedCount = results.filter(p => p.status === 'approved').length;
+      
+      doc.fontSize(10)
+         .text(`Total Payments: ${results.length}`)
+         .text(`Total Amount: $${totalAmount.toFixed(2)}`)
+         .text(`Approved Payments: ${approvedCount}`);
+
+      // Finalize the PDF
+      doc.end();
+    });
   } catch (error) {
-    console.error('Error generating report:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('Report generation error:', error);
+    res.status(500).json({ error: 'Failed to generate report' });
   }
 };
+

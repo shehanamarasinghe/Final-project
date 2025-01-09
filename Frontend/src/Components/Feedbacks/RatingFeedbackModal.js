@@ -12,7 +12,7 @@ function MemberWorkoutPlansPreview() {
         '#FF4B4B',  
         '#FF8C3B', 
         '#FFD93D',  
-        '#4BC0C0',  
+        '#4BC0C0',   
         '#4B7BFF',  
         '#9B4BFF'  
       ];

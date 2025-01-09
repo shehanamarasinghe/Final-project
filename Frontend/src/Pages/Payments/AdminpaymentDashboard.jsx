@@ -7,6 +7,7 @@ import {  Select,  SelectContent,  SelectItem,  SelectTrigger,  SelectValue,} fr
 import { Button } from "../../Components/ui/button.jsx";
 import { Input } from "../../Components/ui/input.jsx";
 import { Badge } from "../../Components/ui/badge.jsx";
+import { Dialog, DialogContent, DialogTrigger } from "../../Components/ui/dialog.jsx";
 
 // API service for handling all API calls
 const api = {
@@ -93,66 +94,126 @@ const api = {
   },
 };
 
-const PaymentSlipCard = ({ slip, onApprove, onReject }) => (
-  <Card className="mb-4 hover:shadow-lg transition-all">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <div>
-        <CardTitle className="text-lg font-semibold">Payment Slip #{slip.id}</CardTitle>
-        <CardDescription>{new Date(slip.date).toLocaleDateString()}</CardDescription>
-      </div>
-      <Badge 
-        variant={slip.status === 'pending' ? 'secondary' : slip.status === 'approved' ? 'success' : 'destructive'}
+
+const PaymentSlipCard = ({ slip, onApprove, onReject }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const getStatusVariant = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'secondary';
+      case 'approved':
+        return 'success';
+      case 'rejected':
+        return 'destructive';
+      default:
+        return 'secondary';
+    }
+  };
+
+  const ImageModal = () => {
+    if (!showModal) return null;
+
+    return (
+      <div 
+        className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+        onClick={() => setShowModal(false)}
       >
-        {slip.status}
-      </Badge>
-    </CardHeader>
-    <CardContent>
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Member Details</p>
-            <p className="text-sm text-gray-500">{slip.memberName}</p>
-            <p className="text-sm text-gray-500">{slip.memberEmail}</p>
-          </div>
-          <div className="mt-4 space-y-1">
-            <p className="text-sm font-medium">Payment Details</p>
-            <p className="text-sm text-gray-500">Amount: ${slip.amount.toLocaleString()}</p>
-            <p className="text-sm text-gray-500">Plan: {slip.planName}</p>
-          </div>
-        </div>
-        <div>
+        <div 
+          className="relative bg-white rounded-lg max-w-4xl w-full"
+          onClick={e => e.stopPropagation()}
+        >
           <img 
-            src={slip.slipUrl} 
-            alt="Payment Slip" 
-            className="w-full h-40 object-cover rounded-lg"
-            onError={(e) => {
-              e.target.src = "/api/placeholder/400/200";
-            }}
+            src={imageError ? "/api/placeholder/800/600" : `http://localhost:5000/${slip.slip_url}`}
+            alt="Payment Slip Full View" 
+            className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+            onError={() => setImageError(true)}
           />
-          {slip.status === 'pending' && (
-            <div className="flex gap-2 mt-4">
-              <Button 
-                onClick={() => onApprove(slip.id)}
-                className="flex-1"
-              >
-                <CheckCircle className="mr-2 h-4 w-4" />
-                Approve
-              </Button>
-              <Button 
-                variant="destructive" 
-                onClick={() => onReject(slip.id)}
-                className="flex-1"
-              >
-                <XCircle className="mr-2 h-4 w-4" />
-                Reject
-              </Button>
-            </div>
-          )}
+          <button
+            onClick={() => setShowModal(false)}
+            className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+          >
+            <XCircle className="h-6 w-6" />
+          </button>
         </div>
       </div>
-    </CardContent>
-  </Card>
-);
+    );
+  };
+
+  return (
+    <Card className="mb-4 hover:shadow-lg transition-all">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div>
+          <CardTitle className="text-lg font-semibold text-gray-900">Payment Slip #{slip.id}</CardTitle>
+          <CardDescription>{new Date(slip.date).toLocaleDateString()}</CardDescription>
+        </div>
+        <Badge 
+          variant={getStatusVariant(slip.status)}
+          className="capitalize"
+        >
+          {slip.status}
+        </Badge>
+      </CardHeader>
+      <CardContent>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-gray-900">Member Details</p>
+              <p className="text-sm text-gray-500">{slip.memberName}</p>
+              <p className="text-sm text-gray-500">{slip.memberEmail}</p>
+            </div>
+            <div className="mt-4 space-y-1">
+              <p className="text-sm font-medium text-gray-900">Payment Details</p>
+              <p className="text-sm text-gray-500">Amount: ${slip.amount.toLocaleString()}</p>
+              <p className="text-sm text-gray-500">Plan: {slip.planName}</p>
+            </div>
+          </div>
+          <div>
+            <div 
+              className="cursor-pointer relative group"
+              onClick={() => setShowModal(true)}
+            >
+              <img 
+                src={imageError ? "/api/placeholder/400/320" : `http://localhost:5000/${slip.slip_url}`}
+                alt="Payment Slip" 
+                className="w-full h-48 object-contain rounded-lg border border-gray-200 transition-all group-hover:opacity-90"
+                onError={() => setImageError(true)}
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-lg">
+                <span className="text-white bg-black/50 px-3 py-1 rounded-full text-sm">
+                  Click to enlarge
+                </span>
+              </div>
+            </div>
+
+            {slip.status === 'pending' && (
+              <div className="flex gap-2 mt-4">
+                <Button 
+                  onClick={() => onApprove(slip.id)}
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Approve
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={() => onReject(slip.id)}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                >
+                  <XCircle className="mr-2 h-4 w-4" />
+                  Reject
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </CardContent>
+      <ImageModal />
+    </Card>
+  );
+};
+
 
 const StatsCard = ({ title, value, icon: Icon, trend }) => (
   <Card>
@@ -204,6 +265,25 @@ const AdminDashboard = () => {
     fetchDashboardData();
   }, []);
 
+  const StatsCard = ({ title, value, icon: Icon, trend }) => (
+    <Card className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium text-gray-900">{title}</CardTitle>
+        <div className="bg-blue-50 p-2 rounded-lg">
+          <Icon className="h-5 w-5 text-blue-600" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold text-gray-900">{value}</div>
+        {trend && (
+          <p className={`text-xs flex items-center mt-1 ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <TrendingUp className={`h-4 w-4 mr-1 ${trend < 0 && 'transform rotate-180'}`} />
+            {trend > 0 ? '+' : ''}{trend}% from last month
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
   const handleApprove = async (slipId) => {
     try {
       await api.approveSlip(slipId);
@@ -226,22 +306,26 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleGenerateReport = async () => {
-    try {
-      const blob = await api.generateReport();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `payment-report-${new Date().toISOString().split('T')[0]}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      setError('Failed to generate report. Please try again.');
-    }
-  };
+  const [generatingReport, setGeneratingReport] = useState(false);
 
+const handleGenerateReport = async () => {
+  try {
+    setGeneratingReport(true);
+    const blob = await api.generateReport();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `payment-report-${new Date().toISOString().split('T')[0]}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    setError('Failed to generate report. Please try again.');
+  } finally {
+    setGeneratingReport(false);
+  }
+};
   const filteredSlips = slips.filter(slip => {
     const matchesStatus = filterStatus === 'all' || slip.status === filterStatus;
     const matchesSearch = slip.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -273,7 +357,7 @@ const AdminDashboard = () => {
       {/* Stats Overview */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
-          title="Total Revenue"
+          title ="Total Revenue"
           value={`$${stats.totalRevenue?.toLocaleString()}`}
           icon={DollarSign}
           trend={stats.revenueTrend}
@@ -300,7 +384,7 @@ const AdminDashboard = () => {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Revenue Overview</CardTitle>
+            <CardTitle className={"text-black font-bold"}>Revenue Overview</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -318,7 +402,7 @@ const AdminDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Payment Trends</CardTitle>
+            <CardTitle className={"text-black font-bold"}>Payment Trends</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -339,11 +423,14 @@ const AdminDashboard = () => {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Payment Slips</CardTitle>
-            <Button onClick={handleGenerateReport}>
-              <FileText className="mr-2 h-4 w-4" />
-              Generate Report
-            </Button>
+            <CardTitle className={"text-black font-bold"}>Payment Slips</CardTitle>
+            <Button 
+  onClick={handleGenerateReport} 
+  disabled={generatingReport}
+>
+  <FileText className="mr-2 h-4 w-4" />
+  {generatingReport ? 'Generating...' : 'Generate Report'}
+</Button>
           </div>
           <div className="flex gap-4 mt-4">
             <div className="flex-1">

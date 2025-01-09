@@ -1,4 +1,3 @@
-// Components/ui/dialog.jsx
 import React from 'react';
 
 export const Dialog = ({ children, open, onOpenChange }) => {
@@ -9,6 +8,14 @@ export const Dialog = ({ children, open, onOpenChange }) => {
       <div className="relative">
         {children}
       </div>
+    </div>
+  );
+};
+
+export const DialogTrigger = ({ children, onClick }) => {
+  return (
+    <div onClick={onClick} className="cursor-pointer">
+      {children}
     </div>
   );
 };
