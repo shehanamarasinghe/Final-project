@@ -29,6 +29,9 @@ import paymentRoutes from "./routs/paymentsRoutes.js";
 import adminpayemntroutes from "./routs/AdminpaymentRoutes.js";
 import GymAttendanceCalendar from "./routs/attendancememberRoute.js";
 import emil from "./routs/emailRoutes.js";
+import mealRoutes from './routs/Mealrouts.js';
+import MfeedbackRoutes from './routs/MealFeedbackroute.js';
+
 
 //dotenv.config();
 
@@ -63,6 +66,8 @@ app.use("/api/members", memberRoutes);
 app.use('/api/dashboard-widget', dashboardwidgetRoutes);
 app.use('/api/assignworkout', assignworkouts);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/meals', mealRoutes);
+app.use('/api/Mfeedback', MfeedbackRoutes);
 app.use('/api/admin/feedback', adminfeedbackroutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/shehan', adminpayemntroutes);

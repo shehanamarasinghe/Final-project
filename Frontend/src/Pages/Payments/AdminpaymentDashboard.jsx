@@ -260,10 +260,12 @@ const AdminDashboard = () => {
   const [error, setError] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [success, setSuccess] = useState(null);
 
   const fetchDashboardData = async () => {
     setLoading(true);
     setError(null);
+    setSuccess(null);
     try {
       const [slipsData, statsData, chartData] = await Promise.all([
         api.fetchSlips(),
@@ -306,11 +308,14 @@ const AdminDashboard = () => {
   );
   const handleApprove = async (slipId, memberEmail) => {
     try {
+      setError(null);
+      setSuccess(null);
       await api.approveSlip(slipId, memberEmail);
       // Refresh the slips data after approval
       setSuccess('Payment slip approved and thank you email sent successfully.');
       const updatedSlips = await api.fetchSlips();
       setSlips(updatedSlips);
+   
     } catch (error) {
       setError('Failed to approve payment slip. Please try again.');
     }
@@ -318,7 +323,10 @@ const AdminDashboard = () => {
 
   const handleReject = async (slipId) => {
     try {
+      setError(null);
+      setSuccess(null);
       await api.rejectSlip(slipId);
+      setSuccess('Payment slip rejected successfully.');
       // Refresh the slips data after rejection
       const updatedSlips = await api.fetchSlips();
       setSlips(updatedSlips);
