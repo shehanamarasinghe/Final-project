@@ -25,6 +25,7 @@ import Assignworkout from './Pages/WorkoutPlan/Adminworkout/Assignworkout.jsx';
 import AFeedback from './Pages/AFeedbacks/Adminfeedback.jsx';
 import MemberPaymentDashboard from "./Pages/Payments/MemberPaymentDashboard.jsx";
 import AdminPaymentDashboard from "./Pages/Payments/AdminpaymentDashboard.jsx";
+import Attendancemember from "./Pages/Attendance/GymAttendanceCalendar.jsx";
 
   
 
@@ -57,6 +58,7 @@ function App() {
       <Route path="/AFeedback" element={<AFeedback />} />
       <Route path="/MemberPaymentDashboard" element={<MemberPaymentDashboard />} />
       <Route path="/AdminPaymentDashboard" element={<AdminPaymentDashboard />} />
+      <Route path="/Attendancemember" element={<Attendancemember />} />
       
 
       <Route 

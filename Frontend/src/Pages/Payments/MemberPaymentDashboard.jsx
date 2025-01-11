@@ -127,12 +127,12 @@ const MemberPaymentDashboard = () => {
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-8">
       {/* Subscription Status Card */}
-      <Card>
+      <Card className="bg-sky-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300' : 'bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
         <CardHeader>
-          <CardTitle className="text-2xl">
+          <CardTitle className="text-2xl font-semibold text-sky-900">
             {isFirstTime ? 'Complete Your Subscription' : 'Your Premium Subscription'}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-900">
             {isFirstTime 
               ? 'Submit your first payment to activate your subscription'
               : `Next payment due: ${subscriptionData?.nextPayment}`
@@ -143,9 +143,9 @@ const MemberPaymentDashboard = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-lg font-semibold">Premium Plan</p>
+                <p className="text-lg font-semibold text-sky-900">Premium Plan</p>
                 <p className="text-sm text-gray-500">
-                  ${subscriptionData?.amount || '299'}/year
+                  ${subscriptionData?.amount || '100'}/month
                 </p>
               </div>
               <Badge variant={isFirstTime ? 'destructive' : 'success'}>
@@ -161,7 +161,7 @@ const MemberPaymentDashboard = () => {
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div 
-                    className="h-full bg-blue-500 rounded-full transition-all"
+                    className="h-full bg-rose-500 rounded-full transition-all"
                     style={{ 
                       width: `${((subscriptionData?.totalDays - subscriptionData?.remainingDays) / subscriptionData?.totalDays) * 100}%` 
                     }}
@@ -174,10 +174,10 @@ const MemberPaymentDashboard = () => {
       </Card>
 
       {/* Payment Upload Section */}
-      <Card>
+      <Card className="bg-sky-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
         <CardHeader>
-          <CardTitle>{isFirstTime ? 'Submit Initial Payment' : 'Submit Payment'}</CardTitle>
-          <CardDescription>Upload your payment slip for verification</CardDescription>
+          <CardTitle className="text-2xl text-sky-900">{isFirstTime ? 'Submit Initial Payment' : 'Submit Payment'}</CardTitle>
+          <CardDescription className="text-gray-900">Upload your payment slip for verification</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -185,7 +185,7 @@ const MemberPaymentDashboard = () => {
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Payment Required</AlertTitle>
               <AlertDescription>
-                Please submit ${subscriptionData?.amount || '299'} for your 
+                Please submit ${subscriptionData?.amount || '100'} for your 
                 {isFirstTime ? ' subscription activation' : ' next billing period'}
               </AlertDescription>
             </Alert>
@@ -212,7 +212,7 @@ const MemberPaymentDashboard = () => {
             </div>
 
             <Button 
-              className="w-full"
+              className="w-full flex items-center justify-center p-2 space-x-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors"
               disabled={!uploadedFile || loading}
               onClick={handleSubmitPayment}
             >
@@ -225,9 +225,9 @@ const MemberPaymentDashboard = () => {
 
       {/* Payment History Section */}
       {paymentHistory.length > 0 && (
-        <Card>
+        <Card className="bg-sky-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
           <CardHeader>
-            <CardTitle>Payment History</CardTitle>
+            <CardTitle className="text-2xl text-sky-900">Payment History</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -241,9 +241,13 @@ const MemberPaymentDashboard = () => {
                       <History className="h-4 w-4 text-gray-600" />
                     </div>
                     <div>
-                      <p className="font-medium">${payment.amount}</p>
+                      <p className="font-medium text-sky-900">${payment.amount}</p>
                       <p className="text-sm text-gray-500">
-                        {new Date(payment.payment_date).toLocaleDateString()}
+                      {new Date(payment.payment_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: '2-digit'
+                  }).replace(',', '')}
                       </p>
                     </div>
                   </div>

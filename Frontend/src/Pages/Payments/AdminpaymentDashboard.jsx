@@ -7,7 +7,7 @@ import {  Select,  SelectContent,  SelectItem,  SelectTrigger,  SelectValue,} fr
 import { Button } from "../../Components/ui/button.jsx";
 import { Input } from "../../Components/ui/input.jsx";
 import { Badge } from "../../Components/ui/badge.jsx";
-import { Dialog, DialogContent, DialogTrigger } from "../../Components/ui/dialog.jsx";
+//import { Dialog, DialogContent, DialogTrigger } from "../../Components/ui/dialog.jsx";
 
 // API service for handling all API calls
 const api = {
@@ -36,15 +36,51 @@ const api = {
   async fetchChartData() {
     try {
       const response = await fetch('/shehan/dashboard/charts');
-      if (!response.ok) throw new Error('Failed to fetch chart data');
-      return await response.json();
+      const data = await response.json();
+      
+      // Ensure data for all months
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+      
+      // Create full year dataset with 0s for missing months
+      const fullYearData = months.map(month => {
+        const monthData = data.find(d => d.month === month);
+        return monthData || {
+          month,
+          revenue: 0,
+          payments: 0
+        };
+      });
+      
+      return fullYearData;
     } catch (error) {
       console.error('Error fetching chart data:', error);
       throw error;
     }
   },
+  async sendThankYouEmail(memberEmail, slipId) {
+    try {
+      const response = await fetch(`/email/thank-you`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          memberEmail,
+          slipId
+        })
+      });
+      if (!response.ok) throw new Error('Failed to send thank you email');
+      return await response.json();
+    } catch (error) {
+      console.error('Error sending thank you email:', error);
+      throw error;
+    }
+  },
 
-  async approveSlip(slipId) {
+  async approveSlip(slipId,memberEmail) {
     try {
       const response = await fetch(`/shehan/payment-slips/${slipId}/approve`, {
         method: 'POST',
@@ -53,6 +89,7 @@ const api = {
         },
       });
       if (!response.ok) throw new Error('Failed to approve payment slip');
+      await api.sendThankYouEmail(memberEmail, slipId);
       return await response.json();
     } catch (error) {
       console.error('Error approving slip:', error);
@@ -190,8 +227,8 @@ const PaymentSlipCard = ({ slip, onApprove, onReject }) => {
             {slip.status === 'pending' && (
               <div className="flex gap-2 mt-4">
                 <Button 
-                  onClick={() => onApprove(slip.id)}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => onApprove(slip.id,slip.memberEmail)}
+                  className="flex-1 bg-sky-950 hover:bg-sky-700 text-white"
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
                   Approve
@@ -214,23 +251,6 @@ const PaymentSlipCard = ({ slip, onApprove, onReject }) => {
   );
 };
 
-
-const StatsCard = ({ title, value, icon: Icon, trend }) => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
-      <Icon className="h-4 w-4 text-muted-foreground" />
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold">{value}</div>
-      {trend && (
-        <p className={`text-xs ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {trend > 0 ? '+' : ''}{trend}% from last month
-        </p>
-      )}
-    </CardContent>
-  </Card>
-);
 
 const AdminDashboard = () => {
   const [slips, setSlips] = useState([]);
@@ -266,7 +286,7 @@ const AdminDashboard = () => {
   }, []);
 
   const StatsCard = ({ title, value, icon: Icon, trend }) => (
-    <Card className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+    <Card className="bg-gray-50 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-gray-900">{title}</CardTitle>
         <div className="bg-blue-50 p-2 rounded-lg">
@@ -274,7 +294,7 @@ const AdminDashboard = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold text-gray-900">{value}</div>
+        <div className="text-2xl font-bold text-sky-900">{value}</div>
         {trend && (
           <p className={`text-xs flex items-center mt-1 ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
             <TrendingUp className={`h-4 w-4 mr-1 ${trend < 0 && 'transform rotate-180'}`} />
@@ -284,10 +304,11 @@ const AdminDashboard = () => {
       </CardContent>
     </Card>
   );
-  const handleApprove = async (slipId) => {
+  const handleApprove = async (slipId, memberEmail) => {
     try {
-      await api.approveSlip(slipId);
+      await api.approveSlip(slipId, memberEmail);
       // Refresh the slips data after approval
+      setSuccess('Payment slip approved and thank you email sent successfully.');
       const updatedSlips = await api.fetchSlips();
       setSlips(updatedSlips);
     } catch (error) {
@@ -394,7 +415,7 @@ const handleGenerateReport = async () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
+                <Line type="monotone" dataKey="revenue" stroke="#9d174d" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -412,7 +433,7 @@ const handleGenerateReport = async () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="payments" fill="#82ca9d" />
+                <Bar dataKey="payments" fill="#9d174d" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -424,7 +445,7 @@ const handleGenerateReport = async () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle className={"text-black font-bold"}>Payment Slips</CardTitle>
-            <Button 
+            <Button className={"bg-sky-950 hover:bg-sky-700 text-white"}
   onClick={handleGenerateReport} 
   disabled={generatingReport}
 >

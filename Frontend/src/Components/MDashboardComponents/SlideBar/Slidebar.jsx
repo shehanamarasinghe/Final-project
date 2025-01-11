@@ -56,10 +56,10 @@ const Slidebar = () => {
               <span className="text-black font-normal text-base ml-3">Exercise</span>
             </li>
           </Link>
-          <Link to="/Mdashboard" className="block">
+          <Link to="/Attendancemember" className="block">
             <li className="flex items-center py-3 cursor-pointer hover:bg-red-300">
               <AddchartRoundedIcon className="text-pink-600 mr-2" />
-              <span className="text-black font-normal text-base ml-3">Stats</span>
+              <span className="text-black font-normal text-base ml-3">Attendance</span>
             </li>
           </Link>
           <Link to="/MemberPaymentDashboard" className="block">

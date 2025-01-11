@@ -1,3 +1,4 @@
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -26,8 +27,10 @@ import feedbackRoutes from './routs/Feedback.js';
 import adminfeedbackroutes from './routs/Adminfeedback.js';
 import paymentRoutes from "./routs/paymentsRoutes.js";
 import adminpayemntroutes from "./routs/AdminpaymentRoutes.js";
+import GymAttendanceCalendar from "./routs/attendancememberRoute.js";
+import emil from "./routs/emailRoutes.js";
 
-dotenv.config();
+//dotenv.config();
 
 const app = express();
 
@@ -63,6 +66,9 @@ app.use('/api/feedback', feedbackRoutes);
 app.use('/api/admin/feedback', adminfeedbackroutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/shehan', adminpayemntroutes);
+app.use('/api/attendancecalendar', GymAttendanceCalendar);
+app.use('/api/email', emil);
+
 
 
 
