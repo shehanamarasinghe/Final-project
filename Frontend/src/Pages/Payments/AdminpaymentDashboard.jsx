@@ -7,6 +7,8 @@ import {  Select,  SelectContent,  SelectItem,  SelectTrigger,  SelectValue,} fr
 import { Button } from "../../Components/ui/button.jsx";
 import { Input } from "../../Components/ui/input.jsx";
 import { Badge } from "../../Components/ui/badge.jsx";
+import Slidebar from "../../Components/ADashboardComponents/SlideBar/Slidebar";
+import Navbar from '../../Components/ADashboardComponents/Navbar/Navbar';
 //import { Dialog, DialogContent, DialogTrigger } from "../../Components/ui/dialog.jsx";
 
 // API service for handling all API calls
@@ -382,6 +384,8 @@ const handleGenerateReport = async () => {
   }
 
   return (
+
+    
     <div className="p-8 space-y-8">
       {/* Stats Overview */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
